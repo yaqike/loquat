@@ -1,0 +1,5 @@
+#NAME	Compartment
+B074S_R	Root endosphere
+B065S_R	Root endosphere
+B065S_RS	Rhizosphere soil
+B074S_RS	Rhizosphere soil
