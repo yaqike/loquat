@@ -133,39 +133,47 @@ qiime taxa barplot \
 --o-visualization taxa-bar-plots.qzv
 
 ##  4. 差异分析ancom
+# 为了保证分析的准确性，建议仅分析具体分类的某一对象(e.g.哪种序列变体在我们两个受试者的肠道样本中丰度存在差异)
+# 确定分析的具体分类和对象
+object=____
+object_group=____
+qiime feature-table filter-samples \
+--i-table table.qza \
+--m-metadata-file sample-metadata.tsv \
+--p-where "[${object_group}]='${object}'" \
+--o-filtered-table ${object}-table.qza
 
 # 格式化特征表，添加伪计数
 qiime composition add-pseudocount \
---i-table table.qza \
---o-composition-table comp-table.qza
+--i-table ${object}-table.qza \
+--o-composition-table comp-${object}-table.qza
 
-# 计算差异特征，指定分组类型比较
+# 计算差异特征，指定需要分析的分组
 column=____
 time qiime composition ancom \
---i-table comp-table.qza \
---m-metadata-file metadata.txt \
+--i-table comp-${object}-table.qza \
+--m-metadata-file sample-metadata.tsv \
 --m-metadata-column ${column} \
 --o-visualization ancom-${column}.qzv
 
 # 按属水平合并
 qiime taxa collapse \
---i-table table.qza \
+--i-table ${object}-table.qza \
 --i-taxonomy taxonomy.qza \
 --p-level 6 \
---o-collapsed-table table-l6.qza
+--o-collapsed-table ${object}-table-l6.qza
 
 # 格式化特征表，添加伪计数
 qiime composition add-pseudocount \
---i-table table-l6.qza \
---o-composition-table comp-table-l6.qza
-
+--i-table ${object}-table-l6.qza \
+--o-composition-table comp-${object}-table-l6.qza
+  
 # 计算差异属，指定分组类型比较
 qiime composition ancom \
---i-table comp-table-l6.qza \
---m-metadata-file metadata.txt \
+--i-table comp-${object}-table-l6.qza \
+--m-metadata-file sample-metadata.tsv \
 --m-metadata-column ${column} \
 --o-visualization l6-ancom-${column}.qzv
-
 
 
 ### 二、PICRUSt2_pipeline
