@@ -171,7 +171,7 @@ qiime composition add-pseudocount \
 # 计算差异属，指定分组类型比较
 qiime composition ancom \
 --i-table comp-${object}-table-l6.qza \
---m-metadata-file sample-metadata.tsv \
+--m-metadata-file metadata.txt \
 --m-metadata-column ${column} \
 --o-visualization l6-ancom-${column}.qzv
 
