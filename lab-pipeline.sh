@@ -139,7 +139,7 @@ object=____
 object_group=____
 qiime feature-table filter-samples \
 --i-table table.qza \
---m-metadata-file sample-metadata.tsv \
+--m-metadata-file metadata.txt \
 --p-where "[${object_group}]='${object}'" \
 --o-filtered-table ${object}-table.qza
 
@@ -152,7 +152,7 @@ qiime composition add-pseudocount \
 column=____
 time qiime composition ancom \
 --i-table comp-${object}-table.qza \
---m-metadata-file sample-metadata.tsv \
+--m-metadata-file metadata.txt \
 --m-metadata-column ${column} \
 --o-visualization ancom-${column}.qzv
 
