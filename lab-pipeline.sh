@@ -139,8 +139,8 @@ qiime taxa barplot \
 --o-visualization taxa-bar-plots.qzv
 
 ##  4. 差异分析ancom
-# 为了保证分析的准确性，建议仅分析具体分类的某一对象(e.g.哪种序列变体在我们两个受试者的肠道样本中丰度存在差异)
-# 确定分析的具体分类和对象
+# 为了保证分析的准确性，建议拆分特征表(选择一种即可)
+# 1.按照samples：仅分析具体分类的某一对象(e.g.哪种序列变体在我们两个受试者的肠道样本中丰度存在差异。object=gut；object_group=body-site；column=subject)
 object=____
 object_group=____
 qiime feature-table filter-samples \
@@ -149,18 +149,13 @@ qiime feature-table filter-samples \
 --p-where "[${object_group}]='${object}'" \
 --o-filtered-table ${object}-table.qza
 
-# 格式化特征表，添加伪计数
-qiime composition add-pseudocount \
---i-table ${object}-table.qza \
---o-composition-table comp-${object}-table.qza
-
-# 计算差异特征，指定需要分析的分组
-column=____
-time qiime composition ancom \
---i-table comp-${object}-table.qza \
---m-metadata-file metadata.txt \
---m-metadata-column ${column} \
---o-visualization ancom-${column}.qzv
+# 2.按照features：(e.g.筛选最小频率为50，至少在4个样品中出现的特征。p-min-frequency 50；p-min-samples 4)
+object=filter
+qiime feature-table filter-features \
+--i-table table.qza \
+--p-min-frequency ____ \
+--p-min-samples ____ \
+--o-filtered-table ${object}-table.qza
 
 # 按属水平合并
 qiime taxa collapse \
@@ -175,6 +170,7 @@ qiime composition add-pseudocount \
 --o-composition-table comp-${object}-table-l6.qza
   
 # 计算差异属，指定分组类型比较
+column=____
 qiime composition ancom \
 --i-table comp-${object}-table-l6.qza \
 --m-metadata-file metadata.txt \
