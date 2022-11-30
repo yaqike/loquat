@@ -124,9 +124,16 @@ qiime metadata tabulate \
 --m-input-file taxonomy.qza \
 --o-visualization taxonomy.qzv
 
+# 过滤序列
+# p-min-frequency参考table.qzv文件中Feature Count值(尽量包含大多数样本)
+qiime feature-table filter-samples \
+--i-table ./dada2_table.qza \
+--p-min-frequency ____ \
+--o-filtered-table table_filter.qza
+
 # 堆叠柱状图展示
 qiime taxa barplot \
---i-table table.qza \
+--i-table table_filter.qza \
 --i-taxonomy taxonomy.qza \
 --m-metadata-file metadata.txt \
 --o-visualization taxa-bar-plots.qzv
