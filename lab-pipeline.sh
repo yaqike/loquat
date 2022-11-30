@@ -127,7 +127,7 @@ qiime metadata tabulate \
 # 过滤序列
 # p-min-frequency参考table.qzv文件中Feature Count值(尽量包含大多数样本)
 qiime feature-table filter-samples \
---i-table ./dada2_table.qza \
+--i-table table.qza \
 --p-min-frequency ____ \
 --o-filtered-table table_filter.qza
 
