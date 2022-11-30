@@ -63,7 +63,7 @@ qiime metadata tabulate \
 --m-input-file dada2-stats.qza \
 --o-visualization dada2-stats.qzv
     
-##  2. Alpha和Beta多样性分析
+##  2. 多样性分析
 
 # 构建进化树用于多样性分析
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -73,8 +73,17 @@ qiime phylogeny align-to-tree-mafft-fasttree \
 --o-tree unrooted-tree.qza \
 --o-rooted-tree rooted-tree.qza
 
+# Alpha稀疏和深度选择
+# p-max-depth参考table.qzv文件中Feature Count值(Sampling Depth的设置尽量包含大多数样本)
+qiime diversity alpha-rarefaction \
+--i-table table.qza \
+--i-phylogeny rooted-tree.qza \
+--p-max-depth ____ \
+--m-metadata-file metadata.txt \
+--o-visualization alpha-rarefaction.qzv
+
 # 计算核心多样性 
-# p-sampling-depth参考table.qzv文件Frequency per sample中Minimum frequency
+# p-max-depth抽平参考table.qzv文件中Feature Count值(尽量包含大多数样本)
 qiime diversity core-metrics-phylogenetic \
 --i-phylogeny rooted-tree.qza \
 --i-table table.qza \
@@ -89,16 +98,6 @@ qiime diversity alpha-group-significance \
 --i-alpha-diversity core-metrics-results/${index}_vector.qza \
 --m-metadata-file metadata.txt \
 --o-visualization core-metrics-results/${index}-group-significance.qzv
-
-# Alpha多样性稀疏曲线
-# p-max-depth参考table.qzv文件Frequency per sample中Maximum frequency
-qiime diversity alpha-rarefaction \
---i-table table.qza \
---i-phylogeny rooted-tree.qza \
---p-max-depth ____ \
---m-metadata-file metadata.txt \
---o-visualization alpha-rarefaction.qzv
-# 结果有observed_otus, shannon, 和faith_pd三种指数可选
 
 # Beta多样性组间显著性分析和可视化
 # 可选的distance有unweighted_unifrac、bray_curtis、weighted_unifrac、jaccard
