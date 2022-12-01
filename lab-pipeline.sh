@@ -139,6 +139,7 @@ qiime taxa barplot \
 --o-visualization taxa-bar-plots.qzv
 
 ##  4. 差异分析ancom
+
 # 为了保证分析的准确性，建议拆分特征表(选择一种即可)
 # 1.按照samples：仅分析具体分类的某一对象(e.g.哪种序列变体在我们两个受试者的肠道样本中丰度存在差异。object=gut；object_group=body-site；column=subject)
 object=____
@@ -176,6 +177,26 @@ qiime composition ancom \
 --m-metadata-file metadata.txt \
 --m-metadata-column ${column} \
 --o-visualization l6-ancom-${column}.qzv
+
+## 5. 随机森林分类(需要设置评估对象metadata-column(多组用_and_连接，如Area_and_State))
+
+qiime sample-classifier classify-samples \
+--i-table table.qza \
+--m-metadata-file metadata.txt \
+--m-metadata-column ____ \
+--p-random-state 666 \
+--output-dir sample-classifier-results/
+
+# 核心微生物(feature-count为所需显示的核心微生物数量)
+qiime sample-classifier heatmap \
+--i-table table.qza \
+--i-importance sample-classifier-results/feature_importance.qza \
+--m-sample-metadata-file metadata.txt \
+--m-sample-metadata-column area and dip \
+--p-group-samples \
+--p-feature-count ____ \
+--o-heatmap sample-classifier-results/heatmap.qzv \
+--o-filtered-table sample-classifier-results/filtered-table.qza
 
 
 ### 二、PICRUSt2_pipeline
