@@ -178,7 +178,7 @@ qiime composition ancom \
 --m-metadata-column ${column} \
 --o-visualization l6-ancom-${column}.qzv
 
-## 5. 随机森林分类(需要设置评估对象metadata-column(多组用_and_连接，如Area_and_State))
+## 5. 随机森林分类(需要设置评估对象metadata-column)
 
 qiime sample-classifier classify-samples \
 --i-table table.qza \
