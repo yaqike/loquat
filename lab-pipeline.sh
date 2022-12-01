@@ -178,12 +178,13 @@ qiime composition ancom \
 --m-metadata-column ${column} \
 --o-visualization l6-ancom-${column}.qzv
 
-## 5. 随机森林分类(需要设置评估对象metadata-column)
+## 5. 随机森林分类
 
+column=____
 qiime sample-classifier classify-samples \
 --i-table table.qza \
 --m-metadata-file metadata.txt \
---m-metadata-column ____ \
+--m-metadata-column ${column} \
 --p-random-state 666 \
 --output-dir sample-classifier-results/
 
